@@ -1,2 +1,6 @@
+#add folders
 /.history
 /node_modules
+
+#dist folder
+/dist/**/*
