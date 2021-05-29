@@ -4,7 +4,7 @@
     "description": "Authentication with typescript and express",
     "main": "src/app.ts",
     "scripts": {
-        "start": "tsc; nodemon build/app.js",
+        "start": "tsc; nodemon dist/app.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Alireza Mahmoudi",
