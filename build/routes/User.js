@@ -41,50 +41,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 //user model
-var user_1 = __importDefault(require("../models/user"));
+var User_1 = require("../classes/User");
+var a = new User_1.User();
+a.findAllUser();
 //create router
 var router = express_1.default.Router();
 //create user
 router.post("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newUser, error_1;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                newUser = new user_1.default(req.body);
-                return [4 /*yield*/, newUser.save()];
-            case 1:
-                _a.sent();
-                res.send("ok");
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                console.error(error_1);
-                res.status(500).send("server error");
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
+        return [2 /*return*/];
     });
 }); });
 //find user all user
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, error_2;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, user_1.default.find({}, { _id: 0, __v: 0 })];
-            case 1:
-                users = _a.sent();
-                res.send(users);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                console.log(error_2);
-                res.status(500).send("server error");
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
+        return [2 /*return*/];
     });
 }); });
 //export router

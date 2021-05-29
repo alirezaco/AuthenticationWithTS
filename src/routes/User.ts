@@ -1,14 +1,16 @@
 import express from "express";
 
 //user model
-import User from "../models/user";
+import { User } from "../classes/User";
 
+let a = new User();
+a.findAllUser();
 //create router
 const router = express.Router();
 
 //create user
 router.post("/", async (req, res) => {
-  try {
+  /* try {
     const newUser = new User(req.body);
 
     await newUser.save();
@@ -18,12 +20,12 @@ router.post("/", async (req, res) => {
     console.error(error);
 
     res.status(500).send("server error");
-  }
+  } */
 });
 
 //find user all user
 router.get("/", async (req, res) => {
-  try {
+  /* try {
     const users = await User.find({}, { _id: 0, __v: 0 });
 
     res.send(users);
@@ -31,7 +33,7 @@ router.get("/", async (req, res) => {
     console.log(error);
 
     res.status(500).send("server error");
-  }
+  } */
 });
 
 //export router
