@@ -1,39 +1,27 @@
 import express from "express";
 
 //user model
-import { User } from "../classes/User";
+import Users, { UserFace } from "../classes/User";
 
-let a = new User();
-a.findAllUser();
 //create router
 const router = express.Router();
 
 //create user
-router.post("/", async (req, res) => {
-  /* try {
-    const newUser = new User(req.body);
+router.post("/", (req, res, next) => {
+  const newUser: UserFace = req.body;
 
-    await newUser.save();
-
-    res.send("ok");
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).send("server error");
-  } */
+  Users.createUser(newUser)
+    .then(() => res.send({}))
+    .catch((err) => next(err));
 });
 
 //find user all user
-router.get("/", async (req, res) => {
-  /* try {
-    const users = await User.find({}, { _id: 0, __v: 0 });
-
-    res.send(users);
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).send("server error");
-  } */
+router.get("/", (req, res, next) => {
+  Users.findAllUser()
+    .then((users) => {
+      res.send(users);
+    })
+    .catch((err) => next(err));
 });
 
 //export router

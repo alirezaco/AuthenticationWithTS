@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 import bcrypt from "bcrypt";
 
 //create user schema
@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export interface User extends mongoose.Document {
+export interface UserModel extends mongoose.Document {
   name: string;
   username: string;
   password: string;
@@ -45,7 +45,7 @@ export interface User extends mongoose.Document {
   phoneNumber?: string;
 }
 
-UserSchema.pre<User>("save", function(next) {
+UserSchema.pre<UserModel>("save", function(next) {
   const user = this;
 
   try {
@@ -61,4 +61,4 @@ UserSchema.pre<User>("save", function(next) {
   }
 });
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model<UserModel>("User", UserSchema);
