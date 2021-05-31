@@ -59,4 +59,14 @@ export default {
         .catch((err) => reject(err));
     });
   },
+
+  findUserByUsername(username: string): Promise<UserModel | null> {
+    return new Promise((resolve, reject) => {
+      UserDoc.findOne({ username })
+        .then((user) => {
+          resolve(user);
+        })
+        .catch((err) => reject(err));
+    });
+  },
 };
