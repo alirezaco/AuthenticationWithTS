@@ -4,7 +4,10 @@ import express from "express";
 import { loginUser } from "./service/login.service";
 
 //create app
-const app = express();
+const router = express.Router();
 
 //Login router
-app.post("/", loginUser);
+router.post("/", loginUser);
+
+//export router
+export default router;
