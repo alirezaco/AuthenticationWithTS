@@ -3,6 +3,7 @@ import path from "path";
 
 //import routers
 import UserRouter from "./User";
+import AuthRouter from "./auth";
 
 //create router
 const router = express.Router();
@@ -19,6 +20,9 @@ router.get("/signUp", (req, res) => {
 
 //user router
 router.use("/user", UserRouter);
+
+//Auth router
+router.use("/auth", AuthRouter);
 
 //export router
 export { router as api };

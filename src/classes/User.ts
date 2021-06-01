@@ -50,9 +50,9 @@ export default {
     });
   },
 
-  updateUser(userId: string, newUser: UserFace): Promise<UserModel> {
+  updateUser(userId: string, newUser: UserFace): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.updateOne({ _id: userId }, newUser, { new: true })
+      UserDoc.findOneAndUpdate({ _id: userId }, newUser, { new: true })
         .then((user) => {
           resolve(user);
         })

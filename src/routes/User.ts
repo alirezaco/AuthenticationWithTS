@@ -3,6 +3,9 @@ import express from "express";
 //user model
 import Users, { UserFace } from "../classes/User";
 
+//middleware for check token
+import checkToken from "../middleware/checkJWT";
+
 //create router
 const router = express.Router();
 
@@ -15,19 +18,25 @@ router.post("/", (req, res, next) => {
     .catch((err) => next(err));
 });
 
+//get User By id
+router.get("/:id", (req, res, next) => {
+  Users.findUserById(req.params.id)
+    .then((user) => {
+      if (!user) return res.status(404).send({ message: "Not Found" });
+      res.send(user);
+    })
+    .catch((err) => next(err));
+});
+
+//check login
+router.use(checkToken);
+
 //get all user
 router.get("/", (req, res, next) => {
   Users.findAllUser()
     .then((users) => {
       res.send(users);
     })
-    .catch((err) => next(err));
-});
-
-//get User By id
-router.get("/:id", (req, res, next) => {
-  Users.findUserById(req.params.id)
-    .then((user) => res.send(user))
     .catch((err) => next(err));
 });
 

@@ -22,3 +22,5 @@ const signJWT = function(user: UserFace): Promise<string | undefined> {
     }
   });
 };
+
+export default signJWT;
