@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 
 //import routes file
 import { api } from "./routes/api";
@@ -10,6 +12,13 @@ import config from "./config/config";
 
 //create app
 const app = express();
+
+//cookie parser
+app.use(cookieParser());
+
+// Parse the body of the request
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //connect to mongodb
 mongoose
