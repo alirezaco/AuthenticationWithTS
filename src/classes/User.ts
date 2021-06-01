@@ -1,4 +1,11 @@
 import UserDoc, { UserModel } from "../models/user";
+import redis from "redis";
+
+//config file
+import config from "../config/config";
+
+//create client for redis
+const redisClient = redis.createClient(config.REDIS.port);
 
 export interface UserFace {
   name: string;
@@ -12,7 +19,7 @@ export interface UserFace {
 export default {
   findAllUser(): Promise<UserModel[]> {
     return new Promise((resolve, reject) => {
-      UserDoc.find({})
+      UserDoc.find({}, { _id: 0, __v: 0, password: 0 })
         .then((users) => {
           resolve(users);
         })
@@ -22,7 +29,7 @@ export default {
 
   findUserById(id: string): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.findOne({ _id: id })
+      UserDoc.findOne({ _id: id }, { _id: 0, __v: 0, password: 0 })
         .then((user) => {
           resolve(user);
         })
@@ -42,9 +49,14 @@ export default {
 
   deleteUser(userId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      UserDoc.deleteOne({ _id: userId })
-        .then(() => {
-          resolve();
+      UserDoc.findByIdAndDelete(userId)
+        .then((user) => {
+          if (user) {
+            redisClient.del(user.username, (err) => {
+              reject(err);
+              resolve();
+            });
+          }
         })
         .catch((err) => reject(err));
     });
@@ -62,7 +74,7 @@ export default {
 
   findUserByUsername(username: string): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.findOne({ username })
+      UserDoc.findOne({ username }, { _id: 0, __v: 0, password: 0 })
         .then((user) => {
           resolve(user);
         })
