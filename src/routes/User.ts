@@ -18,9 +18,9 @@ router.post("/", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-//get User By id
-router.get("/:id", (req, res, next) => {
-  Users.findUserById(req.params.id)
+//get User By username
+router.get("/:username", (req, res, next) => {
+  Users.findUserByUsername(req.params.username)
     .then((user) => {
       if (!user) return res.status(404).send({ message: "Not Found" });
       res.send(user);
@@ -36,6 +36,16 @@ router.get("/", (req, res, next) => {
   Users.findAllUser()
     .then((users) => {
       res.send(users);
+    })
+    .catch((err) => next(err));
+});
+
+//get User By id
+router.get("/:id", (req, res, next) => {
+  Users.findUserById(req.params.id)
+    .then((user) => {
+      if (!user) return res.status(404).send({ message: "Not Found" });
+      res.send(user);
     })
     .catch((err) => next(err));
 });

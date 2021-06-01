@@ -33,7 +33,14 @@ const SERVER = {
   },
 };
 
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
+
+const REDIS = {
+  port: +REDIS_PORT,
+};
+
 export default {
   SERVER,
   MONGO,
+  REDIS,
 };

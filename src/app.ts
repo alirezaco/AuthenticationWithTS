@@ -43,7 +43,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
   const error: Error = new Error("server Error");
 
-  res.status(500).send(error);
+  res.status(500).send(error.message);
 });
 
 //Error handling(404)

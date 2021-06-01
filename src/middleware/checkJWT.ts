@@ -1,8 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction, RequestHandler } from "express";
+import redis from "redis";
 
 //config file
 import config from "../config/config";
+
+//create client for redis
+const redisClient = redis.createClient(config.REDIS.port);
 
 const checkToken: RequestHandler = (
   req: Request,
@@ -17,11 +21,17 @@ const checkToken: RequestHandler = (
       token,
       config.SERVER.token.secret,
       (error: any, encoded: any) => {
-        if (error || !encoded) return res.status(404).send({ message: error });
+        if (error || !encoded || !encoded.user)
+          return res.status(404).send({ message: error || "Unauthorized" });
 
-        res.locals.jwt = encoded;
+        redisClient.get(encoded.user.username, (err, data) => {
+          if (err || !data || data !== token)
+            return res.status(404).send({ message: error || "Unauthorized" });
 
-        next();
+          res.locals.user = encoded.user;
+
+          next();
+        });
       }
     );
   } else {
