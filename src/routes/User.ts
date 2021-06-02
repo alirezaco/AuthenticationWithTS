@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from "bcrypt";
 
 //user model
 import Users, { UserFace } from "../classes/User";
@@ -62,6 +63,19 @@ router.put("/:id", (req, res, next) => {
   Users.updateUser(req.params.id, req.body)
     .then((newUser) => res.send({ message: "User updated", newUser }))
     .catch((err) => next(err));
+});
+
+//update Password
+router.put("/password/:id", (req, res, next) => {
+  const { oldPassword, newPassword } = req.body;
+
+  bcrypt.compare(oldPassword, res.locals.user.password).then((result) => {
+    if (!result) return res.status(404).send("old password is incorrect");
+
+    Users.updateUserPassword(req.params.id, newPassword)
+      .then((user) => res.send({ message: "User password updated", user }))
+      .catch((err) => next(err));
+  });
 });
 
 //export router

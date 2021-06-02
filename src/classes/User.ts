@@ -19,7 +19,7 @@ export interface UserFace {
 export default {
   findAllUser(): Promise<UserModel[]> {
     return new Promise((resolve, reject) => {
-      UserDoc.find({}, { _id: 0, __v: 0, password: 0 })
+      UserDoc.find({}, { __v: 0, password: 0 })
         .then((users) => {
           resolve(users);
         })
@@ -29,7 +29,7 @@ export default {
 
   findUserById(id: string): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.findOne({ _id: id }, { _id: 0, __v: 0, password: 0 })
+      UserDoc.findOne({ _id: id }, { __v: 0, password: 0 })
         .then((user) => {
           resolve(user);
         })
@@ -72,9 +72,27 @@ export default {
     });
   },
 
+  updateUserPassword(userId: string, newPassword: string): Promise<UserModel> {
+    return new Promise((resolve, reject) => {
+      UserDoc.findOneAndUpdate(
+        { _id: userId },
+        { password: newPassword },
+        { new: true }
+      )
+        .then((user) => {
+          if (!user) return reject(new Error("User not found"));
+
+          user.save();
+
+          resolve(user);
+        })
+        .catch((err) => reject(err));
+    });
+  },
+
   findUserByUsername(username: string): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.findOne({ username }, { _id: 0, __v: 0, password: 0 })
+      UserDoc.findOne({ username }, { __v: 0, password: 0 })
         .then((user) => {
           resolve(user);
         })

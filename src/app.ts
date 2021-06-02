@@ -39,7 +39,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(
     "----------------------------------------------------------------------------------------------"
   );
+
   console.error(err.stack);
+
+  console.log(
+    "----------------------------------------------------------------------------------------------"
+  );
 
   const error: Error = new Error("server Error");
 
