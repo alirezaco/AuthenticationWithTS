@@ -65,10 +65,12 @@ router.put("/password/:id", (req, res, next) => {
   bcrypt
     .compare(oldPassword, res.locals.user.password)
     .then((result) => {
-      if (!result) res.status(404).send("old password is incorrect");
-      else return Users.updateUserPassword(req.params.id, newPassword);
+      if (!result) return res.status(404).send("old password is incorrect");
+
+      return Users.updateUserPassword(req.params.id, newPassword)
+        .then((user) => res.send({ message: "User password updated", user }))
+        .catch((err) => next(err));
     })
-    .then((user) => res.send({ message: "User password updated", user }))
     .catch((err) => next(err));
 });
 
