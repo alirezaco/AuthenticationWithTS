@@ -1,10 +1,18 @@
 import { Request, Response, RequestHandler, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import redis from "redis";
+
 //import User
 import User from "../../classes/User";
 
 //import function for generate token
 import signJWT from "../../Tools/signJWT";
+
+//config file
+import config from "../../config/config";
+
+//create client for redis
+const redisClient = redis.createClient(config.REDIS.port);
 
 const loginUser: RequestHandler = function(
   req: Request,
@@ -39,6 +47,14 @@ const loginUser: RequestHandler = function(
 
 const IsLogin: RequestHandler = (req: Request, res: Response) => {
   res.send({ message: "user loggedIn" });
+};
+
+const logOut: RequestHandler = (req: Request, res: Response) => {
+  res.cookie("Auth", "");
+
+  redisClient.del(res.locals.user.username);
+
+  res.send("log out");
 };
 
 export { loginUser, IsLogin };

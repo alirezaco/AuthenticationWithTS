@@ -53,7 +53,7 @@ export default {
         .then((user) => {
           if (user) {
             redisClient.del(user.username, (err) => {
-              reject(err);
+              if (err) return reject(err);
               resolve();
             });
           }
@@ -84,7 +84,10 @@ export default {
 
           user.save();
 
-          resolve(user);
+          redisClient.del(user.username, (err) => {
+            if (err) return reject(err);
+            resolve(user);
+          });
         })
         .catch((err) => reject(err));
     });
@@ -92,7 +95,7 @@ export default {
 
   findUserByUsername(username: string): Promise<UserModel | null> {
     return new Promise((resolve, reject) => {
-      UserDoc.findOne({ username }, { __v: 0, password: 0 })
+      UserDoc.findOne({ username }, { __v: 0 })
         .then((user) => {
           resolve(user);
         })
