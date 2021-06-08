@@ -50,11 +50,11 @@ const IsLogin: RequestHandler = (req: Request, res: Response) => {
 };
 
 const logOut: RequestHandler = (req: Request, res: Response) => {
-  res.cookie("Auth", "");
-
   redisClient.del(res.locals.user.username);
 
-  res.send("log out");
+  res.cookie("Auth", "");
+
+  res.send({ message: "log out" });
 };
 
 export { loginUser, IsLogin, logOut };

@@ -16,7 +16,7 @@ router.post("/", loginUser);
 router.get("/", checkToken, IsLogin);
 
 //logout router
-router.get("/logout", logOut);
+router.get("/logout", checkToken, logOut);
 
 //export router
 export default router;

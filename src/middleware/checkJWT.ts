@@ -39,4 +39,30 @@ const checkToken: RequestHandler = (
   }
 };
 
+const checkLogin: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = req.cookies["Auth"];
+
+  if (token) {
+    //check token
+    jwt.verify(
+      token,
+      config.SERVER.token.secret,
+      (error: any, encoded: any) => {
+        if (error || !encoded || !encoded.user) return next();
+
+        redisClient.get(encoded.user.username, (err, data) => {
+          if (err || !data || data !== token) return next();
+
+          res.status(403).send({ message: "You have already logged in" });
+        });
+      }
+    );
+  } else {
+    next();
+  }
+};
 export default checkToken;
