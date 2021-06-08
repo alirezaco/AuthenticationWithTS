@@ -1,7 +1,7 @@
 import express from "express";
 
 //import service
-import { loginUser, IsLogin } from "./service/login.service";
+import { loginUser, IsLogin, logOut } from "./service/login.service";
 
 //middleware for check token
 import checkToken from "../middleware/checkJWT";
@@ -14,6 +14,9 @@ router.post("/", loginUser);
 
 //router for check login
 router.get("/", checkToken, IsLogin);
+
+//logout router
+router.get("/logout", logOut);
 
 //export router
 export default router;

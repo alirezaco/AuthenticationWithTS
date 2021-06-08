@@ -57,4 +57,4 @@ const logOut: RequestHandler = (req: Request, res: Response) => {
   res.send("log out");
 };
 
-export { loginUser, IsLogin };
+export { loginUser, IsLogin, logOut };
