@@ -1,0 +1,246 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "api for CRUD User with type script",
+        "version": "1.0.0",
+        "title": "Authentication",
+        "contact": {
+            "email": "ali.mahmodi5005544@gmail.com"
+        }
+    },
+    "tags": [{
+        "name": "User",
+        "description": "CRUD for user",
+        "externalDocs": {
+            "description": "Find out more about our User",
+            "url": "http://127.0.0.1:4000/user"
+        }
+    }, {
+        "name": "Authentication",
+        "description": "Authentication for user",
+        "externalDocs": {
+            "url": "http://127.0.0.1:4000/auth"
+        }
+    }],
+    "paths": {
+        "/user": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Create user",
+                "description": "This created without logged in user.",
+                "operationId": "createUser",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "Created user object",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                }],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["User"],
+                "summary": "Get user all User",
+                "description": "this only with logged in user.",
+                "operationId": "getUserByName",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "put": {
+                "tags": ["User"],
+                "summary": "Updated user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "updateUser",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "user id need for update in path",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "in": "body",
+                    "name": "body",
+                    "description": "Updated user object",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/User"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "Invalid user supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["User"],
+                "summary": "Delete user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "deleteUser",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "The id that needs to be deleted",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/auth": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Logs user into the system",
+                "operationId": "loginUser",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "body",
+                    "in": "body",
+                    "description": "The user name for login",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "username": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "user": {
+                                    "type": "object",
+                                    "$ref": "#/definitions/User"
+                                },
+                                "token": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Authentication"],
+                "summary": "Logs out current logged in user session",
+                "operationId": "checklogInUser",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "tags": ["Authentication"],
+                "summary": "Logs out current logged in user session",
+                "operationId": "logoutUser",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "age": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "host": "127.0.0.1:4000",
+    "schemes": ["http"],
+    "basePath": "/"
+}

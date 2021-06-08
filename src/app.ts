@@ -3,6 +3,7 @@ import path from "path";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import fs from "fs";
 
 //import routes file
 import { api } from "./routes/api";
@@ -12,6 +13,19 @@ import config from "./config/config";
 
 //create app
 const app = express();
+
+//create swagger
+import swagger from "swagger-ui-express";
+try {
+  const swaggerDoc = fs.readFileSync(
+    path.join(__dirname, "../swagger_docs.json"),
+    "utf-8"
+  );
+
+  app.use("/api-docs", swagger.serve, swagger.setup(JSON.parse(swaggerDoc)));
+} catch (error) {
+  console.error(error);
+}
 
 //cookie parser
 app.use(cookieParser());
